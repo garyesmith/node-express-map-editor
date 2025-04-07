@@ -18,7 +18,9 @@ $(document).ready(function() {
         var x=$(this).attr("data-x");
         var y=$(this).attr("data-y");
         $("#location-coords").val(x+","+y);
-        $("#location-name").val(map[y][x].name)
+        $.get( "/api/map/"+x+"/"+y, function( location ) {
+            $("#location-name").val(location.name)
+        });
     });
 
 });

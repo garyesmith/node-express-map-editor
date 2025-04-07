@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const fs = require('node:fs');
 
+// configuration -- change these values as required
 const mapNumVerticalCells=25;
 const mapNumHorizontalCells=25;
 
-// define empty map grid
+// define an empty map array
 let map=[];
 for (y=-Math.floor(mapNumVerticalCells/2); y<Math.ceil(mapNumVerticalCells/2); y++) {
     let row=[];
@@ -19,12 +21,23 @@ for (y=-Math.floor(mapNumVerticalCells/2); y<Math.ceil(mapNumVerticalCells/2); y
     map[y]=row;
 }
 
-map[0][0].isEmpty=false;
-map[0][0].name='An empty field.';
+// read in map json and add any defined locations to the map array
+fs.readFile('public/data/map.json', 'utf8', (err, locations) => {
 
-map[0][1].isEmpty=false;
-map[0][1].name='A rocky ledge.';
+    if (err) {
+        throw new Error(err);
+    }
 
+    locations=JSON.parse(locations); // convert string to JSON object
+
+    // loop through all defined locations, if it matches on x and y, replace the array element
+    for (var i=0; i<locations.length; i++) {
+        map[locations[i].y][locations[i].x]=locations[i];
+    }
+
+});
+
+// pass dynamic values to the edit template
 router.get('/', function(req, res, next) {
     res.render('edit', {
         title: 'Map Editor',
