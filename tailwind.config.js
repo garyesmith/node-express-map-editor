@@ -10,6 +10,7 @@ module.exports = {
             neutral: colors.trueGray,
             gray: colors.coolGray,
             slate: colors.blueGray,
+            lime: colors.lime,
         }
     }
   },

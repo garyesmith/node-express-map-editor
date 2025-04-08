@@ -6,9 +6,11 @@
       <div id="map" class="w-auto h-auto" data-mapWidthPx="<%= mapWidthPx %>" data-mapHeightPx="<%= mapHeightPx %>">
         <% for (y=-Math.floor(mapNumVerticalCells/2); y<Math.ceil(mapNumVerticalCells/2); y++) { %>
           <% for (x=-Math.floor(mapNumHorizontalCells/2); x<Math.ceil(mapNumHorizontalCells/2); x++) { %>
-            <% var borderColor = (map[y][x].isEmpty) ? 'border-gray-100' : 'border-gray-400' %>
-            <div id="map-cell-<%= y + '-' + x %>" data-x="<%= x %>" data-y="<%= y %>" class="map-cell <%= borderColor %> hover:border-sky-300 p-4 m-2 w-40 h-25 text-xs rounded-sm float-left text-center border-1 block cursor-pointer select-none">
-              <%= map[y][x].x %>,<%= map[y][x].y %> : <%= map[y][x].name %>
+            <% var borderColor = (map[y][x].isEmpty) ? 'border-gray-200' : 'border-gray-500' %>
+            <% var bgColor = (map[y][x].isEmpty) ? 'bg-gray-50' : 'bg-gray-200' %>
+            <% var isEmpty = (map[y][x].isEmpty) ? 'true' : 'false' %>
+            <div id="map-cell-<%= y %>-<%= x %>" data-x="<%= x %>" data-y="<%= y %>" data-is-empty="<%= isEmpty %>" class="map-cell <%= borderColor %> <%= bgColor %> hover:border-sky-300 p-4 m-2 w-40 h-25 text-xs rounded-sm float-left text-center border-1 hover:border-2 block cursor-pointer select-none">
+              <%= map[y][x].name %>
             </div>
           <% } %>
           <p class="clear-both" />
@@ -16,17 +18,37 @@
       </div>
     </div>
     <div id="edit-form" class="col-span-1 h-9/10 bg-gray-300 ml-2 p-4">
-      <h1 class="font-bold mb-2">Edit Location</h1>
 
-      <p>
-        <label for="location-coords">Coords:</label><br />
-        <input id="location-coords" type="text" class="border-0" disabled="disabled" />
-      </p>
+      <form id="location-form" class="hidden">
+        
+        <h1 class="font-bold mb-2">Edit Location</h1>
 
-      <p>
-        <label for="location-name">Location Name:</label><br />
-        <input id="location-name" type="text" class="border-1" />
-      </p>
+        <p id="location-form-status" class="text-lime-700 select-none w-full text-right absolute top-12 right-0 pr-5"></p>
+
+        <p class="mb-4">
+          <label for="location-coords">Coords:</label><br />
+          <input id="location-coords" type="text" class="border-1 w-full p-1 font-mono text-xs" disabled="disabled" />
+        </p>
+
+        <p class="mb-4">
+          <label for="location-name" class="pt-2 mb-2">Location Name:</label><br />
+          <input id="location-name" type="text" class="border-1 w-full p-1 bg-gray-100 font-mono text-xs" />
+        </p>
+
+        <p class="mb-4">
+          <label for="location-desc" class="pt-2 mb-2">Location Description:</label><br />
+          <textarea id="location-desc" type="text" class="border-1 w-full h-30 p-1 bg-gray-100 font-mono text-xs"></textarea>
+        </p>
+
+        <p class="mb-4">
+          <label for="location-dirs" class="pt-2 mb-4">Valid Move Directions:</label><br />
+          <span class="w-6/10 block text-center clear-both pt-2 text-xs">NORTH<br /><input class="location-dir-north p-1" type="checkbox" /></span>
+          <span class="w-3/10 block text-center float-left pt-2">WEST <input class="location-dir-west p-1" type="checkbox" /></span>
+          <span class="w-3/10 block text-center float-left pt-2"><input class="location-dir-east p-1" type="checkbox" /> EAST</span>
+          <span class="w-6/10 block text-center clear-both pt-2"><input class="location-dir-south p-1" type="checkbox" /><br />SOUTH</span>
+        </p>
+
+      </form>
 
     </div>
   </div>

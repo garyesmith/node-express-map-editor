@@ -1,0 +1,14 @@
+[
+    {
+        "name": "First Location File",
+        "desc": "This is the first location.\n\nWe can add paragraphs, like this. One two three.",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "name": "Second Location File",
+        "desc": "The ground here is rocky and uneven.",
+        "x": 1,
+        "y": 0
+    }
+]

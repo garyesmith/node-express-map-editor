@@ -32,6 +32,7 @@ fs.readFile('public/data/map.json', 'utf8', (err, locations) => {
 
     // loop through all defined locations, if it matches on x and y, replace the array element
     for (var i=0; i<locations.length; i++) {
+        locations[i].isEmpty=false;
         map[locations[i].y][locations[i].x]=locations[i];
     }
 

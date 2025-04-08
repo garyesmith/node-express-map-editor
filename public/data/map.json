@@ -1,12 +1,136 @@
 [
-    {
-        "name": "First Location File",
-        "x": 0,
-        "y": 0
-    },
-    {
-        "name": "Second Location File",
-        "x": 1,
-        "y": 0
-    }
+  {
+    "name": "First Location File",
+    "desc": "This is the first location.\n\nWe can add paragraphs, like this. One two three.",
+    "x": 0,
+    "y": 0
+  },
+  {
+    "name": "Second Location File",
+    "desc": "The ground here is rocky and uneven.",
+    "x": 1,
+    "y": 0
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "THird Location",
+    "desc": "",
+    "isEmpty": false
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "THird Location",
+    "desc": "",
+    "isEmpty": false
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdfsdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdfsdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "sdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "sdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "sdfsdfdfsadf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "sdfsdfdfsadf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfasdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfasdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "name": "asdfsdf",
+    "desc": ""
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "name": "t235235",
+    "desc": ""
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "name": "t235235",
+    "desc": ""
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "name": "t2352355235",
+    "desc": ""
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "name": "t2352355235",
+    "desc": ""
+  },
+  {
+    "x": 2,
+    "y": 1,
+    "name": "ewee",
+    "desc": ""
+  }
 ]
