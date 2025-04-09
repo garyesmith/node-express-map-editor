@@ -9,8 +9,17 @@
             <% var borderColor = (map[y][x].isEmpty) ? 'border-gray-200' : 'border-gray-500' %>
             <% var bgColor = (map[y][x].isEmpty) ? 'bg-gray-50' : 'bg-gray-200' %>
             <% var isEmpty = (map[y][x].isEmpty) ? 'true' : 'false' %>
-            <div id="map-cell-<%= y %>-<%= x %>" data-x="<%= x %>" data-y="<%= y %>" data-is-empty="<%= isEmpty %>" class="map-cell <%= borderColor %> <%= bgColor %> hover:border-sky-300 p-4 m-2 w-40 h-25 text-xs rounded-sm float-left text-center border-1 hover:border-2 block cursor-pointer select-none">
+            <div id="map-cell-<%= y %>-<%= x %>" data-x="<%= x %>" data-y="<%= y %>" data-is-empty="<%= isEmpty %>" class="map-cell <%= borderColor %> <%= bgColor %> hover:border-sky-300 p-4 m-2 w-40 h-25 text-xs rounded-sm float-left text-center border-1 block cursor-pointer select-none relative">
               <%= map[y][x].name %>
+              <% if (map[y][x].dirs.indexOf("north")!=-1) { %>
+                <div class="absolute block top-0 left-0 w-1 h-4 border-l-1 border-gray-500 ml-19" style="margin-top:-11%;"></div>
+              <% } if (map[y][x].dirs.indexOf("south")!=-1) { %>
+                <div class="absolute block top-0 left-0 w-1 h-4 border-l-1 border-gray-500 ml-19" style="margin-top:63%;"></div>
+              <% } if (map[y][x].dirs.indexOf("west")!=-1) { %>
+                <div class="absolute block top-0 left-0 w-4 h-1 border-b-1 border-gray-500 mt-11" style="margin-left: -11%;"></div>
+                <% } if (map[y][x].dirs.indexOf("east")!=-1) { %>
+                  <div class="absolute block top-0 left-0 w-4 h-1 border-b-1 border-gray-500 mt-11" style="margin-left: 100%;"></div>                
+              <% } %>
             </div>
           <% } %>
           <p class="clear-both" />
@@ -41,11 +50,11 @@
         </p>
 
         <p class="mb-4">
-          <label for="location-dirs" class="pt-2 mb-4">Valid Move Directions:</label><br />
-          <span class="w-6/10 block text-center clear-both pt-2 text-xs">NORTH<br /><input class="location-dir-north p-1" type="checkbox" /></span>
-          <span class="w-3/10 block text-center float-left pt-2">WEST <input class="location-dir-west p-1" type="checkbox" /></span>
-          <span class="w-3/10 block text-center float-left pt-2"><input class="location-dir-east p-1" type="checkbox" /> EAST</span>
-          <span class="w-6/10 block text-center clear-both pt-2"><input class="location-dir-south p-1" type="checkbox" /><br />SOUTH</span>
+          <label class="pt-2 mb-4">Valid Move Directions:</label><br />
+          <span class="w-6/10 block text-center clear-both pt-2 text-xs">NORTH<br /><input class="location-dir location-dir-north p-1" type="checkbox" /></span>
+          <span class="w-3/10 block text-center float-left pt-2 text-xs">WEST <input class="location-dir location-dir-west p-1" type="checkbox" /></span>
+          <span class="w-3/10 block text-center float-left pt-2 text-xs"><input class="location-dir location-dir-east p-1" type="checkbox" /> EAST</span>
+          <span class="w-6/10 block text-center clear-both pt-2 text-xs"><input class="location-dir location-dir-south p-1" type="checkbox" /><br />SOUTH</span>
         </p>
 
       </form>

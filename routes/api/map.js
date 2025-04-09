@@ -8,34 +8,31 @@ var router = express.Router();
 router.get('/:x?/:y?', function(req, res, next) {
 
     // read in the full json data file
-    fs.readFile('public/data/map.json', 'utf8', (err, data) => {
-        if (err) {
-            throw new Error(err);
-        }
+    data=fs.readFileSync('public/data/map.json', 'utf8');
 
-        data=JSON.parse(data); // convert string to JSON object
+    data=JSON.parse(data); // convert string to JSON object
 
-        // if neither x nor y param passed, return full data set
-        if (typeof req.params.x == "undefined" && typeof req.params.y == "undefined") {
-            res.json(data);
-        }
-        
-        // if only one of x or y param passed, return nothing
-        else if (typeof req.params.x == "undefined" || typeof req.params.y == "undefined") {
-            res.json({"status": "not found"});
-        }
+    // if neither x nor y param passed, return full data set
+    if (typeof req.params.x == "undefined" && typeof req.params.y == "undefined") {
+        res.json(data);
+    }
+    
+    // if only one of x or y param passed, return nothing
+    else if (typeof req.params.x == "undefined" || typeof req.params.y == "undefined") {
+        res.json({"status": "error", "msg": "Must pass both x and y values to read data for a single location."});
+    }
 
-        //if x and y param passed, return data for only that location, if it exists
-        else { 
-            for (var i=0; i<data.length; i++) {
-                if (data[i].x==req.params.x && data[i].y==req.params.y) {
-                    res.json(data[i]);
-                    return;
-                }
+    // if x and y param passed, update data for only that location, if it exists
+    else { 
+        for (var i=0; i<data.length; i++) {
+            if (data[i].x==req.params.x && data[i].y==req.params.y) {
+                res.json(data[i]);
+                return;
             }
-            res.json({"status": "not found"}); // x and y location was not found
         }
-    });
+        // if existing x and y location was not found, return error
+        res.json({"status": "error", "msg": "No record with specified x and y values was found."}); 
+    }
     
 });
 
@@ -43,28 +40,24 @@ router.get('/:x?/:y?', function(req, res, next) {
 router.post('/', function(req, res, next) {
 
     // read in the full json data file
-    fs.readFile('public/data/map.json', 'utf8', (err, data) => {
-        if (err) {
-            throw new Error(err);
+    data=fs.readFileSync('public/data/map.json', 'utf8');
+
+    data=JSON.parse(data); // convert string to JSON object
+
+    req.body.x=parseInt(req.body.x, 10);
+    req.body.y=parseInt(req.body.y, 10);
+
+    for (var i=0; i<data.length; i++) {
+        if (parseInt(data[i].x,10)==req.body.x && parseInt(data[i].y,10)==req.body.y) {
+            res.json({"status":"error","msg":"A record with specified x and y values already exists."});
+            res.end();
+            return;
         }
+    }
 
-        data=JSON.parse(data); // convert string to JSON object
+    data.push(req.body);
 
-        req.body.x=parseInt(req.body.x, 10);
-        req.body.y=parseInt(req.body.y, 10);
-
-        for (var i=0; i<data.length; i++) {
-            if (parseInt(data[i].x,10)==req.body.x && parseInt(data[i].y,10)==req.body.y) {
-                res.json({"status":"error","message":"A record with these x and y values already exists."});
-                return;
-            }
-        }
-
-        data.push(req.body);
-
-        saveMapFile(data);
-
-    });
+    saveMapFile(data, res);
 
 });
 
@@ -72,37 +65,38 @@ router.post('/', function(req, res, next) {
 router.put('/', function(req, res, next) {
 
     // read in the full json data file
-    fs.readFile('public/data/map.json', 'utf8', (err, data) => {
-        if (err) {
-            throw new Error(err);
+    data=fs.readFileSync('public/data/map.json', 'utf8');
+
+    data=JSON.parse(data); // convert string to JSON object
+
+    req.body.x=parseInt(req.body.x, 10);
+    req.body.y=parseInt(req.body.y, 10);
+
+    var isSaved=false;
+    for (var i=0; i<data.length; i++) {
+        if (parseInt(data[i].x,10)==req.body.x && parseInt(data[i].y,10)==req.body.y) {
+            data[i]=req.body;
+            saveMapFile(data, res);
+            isSaved=true;
         }
+    }
 
-        data=JSON.parse(data); // convert string to JSON object
+    if (!isSaved) {
+        res.json({"status":"error","msg":"No record with specified x and y values was found."});
+    }
 
-        req.body.x=parseInt(req.body.x, 10);
-        req.body.y=parseInt(req.body.y, 10);
-
-        for (var i=0; i<data.length; i++) {
-            if (parseInt(data[i].x,10)==req.body.x && parseInt(data[i].y,10)==req.body.y) {
-                data[i]=req.body;
-                saveMapFile(data);
-                break;
-            }
-        }
-
-        res.json({"status":"ok"});
-
-    });
 
 });
 
-function saveMapFile(data) {
+function saveMapFile(data, res) {
     fs.writeFile('public/data/map.json', JSON.stringify(data, null, 2), err => {
         if (err) {
             console.error(err);
+            res.json({"status": "error", "msg":"Could not save JSON: ", "details": err});
+            res.end();
         } else {
             res.json({"status": "ok"});
-            return;
+            res.end();
         }
     });
 }

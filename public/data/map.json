@@ -1,136 +1,65 @@
 [
   {
+    "x": 0,
+    "y": 0,
     "name": "First Location File",
     "desc": "This is the first location.\n\nWe can add paragraphs, like this. One two three.",
-    "x": 0,
-    "y": 0
+    "dirs": "east"
   },
   {
+    "x": 1,
+    "y": 0,
     "name": "Second Location File",
     "desc": "The ground here is rocky and uneven.",
-    "x": 1,
-    "y": 0
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "THird Location",
-    "desc": "",
-    "isEmpty": false
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "THird Location",
-    "desc": "",
-    "isEmpty": false
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdfsdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdfsdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "sdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "sdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "sdfsdfdfsadf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "sdfsdfdfsadf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfasdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfasdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdf",
-    "desc": ""
-  },
-  {
-    "x": 0,
-    "y": 1,
-    "name": "asdfsdf",
-    "desc": ""
+    "dirs": "west"
   },
   {
     "x": 1,
     "y": 1,
-    "name": "t235235",
-    "desc": ""
+    "name": "Third",
+    "desc": "This is the third",
+    "dirs": "north"
   },
   {
     "x": 1,
-    "y": 1,
-    "name": "t235235",
-    "desc": ""
-  },
-  {
-    "x": 1,
-    "y": 1,
-    "name": "t2352355235",
-    "desc": ""
-  },
-  {
-    "x": 1,
-    "y": 1,
-    "name": "t2352355235",
-    "desc": ""
+    "y": 2,
+    "name": "Fourth",
+    "desc": "Fourth cell",
+    "dirs": "east,west"
   },
   {
     "x": 2,
+    "y": 2,
+    "name": "Fifth",
+    "desc": "Fifths",
+    "dirs": "west"
+  },
+  {
+    "x": 0,
+    "y": 2,
+    "name": "Sixth",
+    "desc": "Sixth place.",
+    "dirs": "east,west"
+  },
+  {
+    "x": -1,
+    "y": 2,
+    "name": "Seventh",
+    "desc": "Seven",
+    "dirs": "east,west"
+  },
+  {
+    "x": -2,
+    "y": 2,
+    "name": "Eight",
+    "desc": "",
+    "dirs": "north,east"
+  },
+  {
+    "x": -2,
     "y": 1,
-    "name": "ewee",
-    "desc": ""
+    "name": "Ninth",
+    "desc": "Add some text.",
+    "dirs": "south"
   }
 ]

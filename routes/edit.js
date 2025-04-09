@@ -6,27 +6,27 @@ const fs = require('node:fs');
 const mapNumVerticalCells=25;
 const mapNumHorizontalCells=25;
 
-// define an empty map array
-let map=[];
-for (y=-Math.floor(mapNumVerticalCells/2); y<Math.ceil(mapNumVerticalCells/2); y++) {
-    let row=[];
-    for (x=-Math.floor(mapNumHorizontalCells/2); x<Math.ceil(mapNumHorizontalCells/2); x++) {
-        row[x]={
-            x: x,
-            y: y,
-            name: '',
-            isEmpty: true
+// load the full map data from json and convert it to an array
+function loadMapData() {
+        
+    // define an empty map array
+    let map=[];
+    for (y=-Math.floor(mapNumVerticalCells/2); y<Math.ceil(mapNumVerticalCells/2); y++) {
+        let row=[];
+        for (x=-Math.floor(mapNumHorizontalCells/2); x<Math.ceil(mapNumHorizontalCells/2); x++) {
+            row[x]={
+                x: x,
+                y: y,
+                name: '',
+                isEmpty: true,
+                dirs: ''
+            }
         }
+        map[y]=row;
     }
-    map[y]=row;
-}
 
-// read in map json and add any defined locations to the map array
-fs.readFile('public/data/map.json', 'utf8', (err, locations) => {
-
-    if (err) {
-        throw new Error(err);
-    }
+    // read in map json and add any defined locations to the map array
+    var locations=fs.readFileSync('public/data/map.json', 'utf8');
 
     locations=JSON.parse(locations); // convert string to JSON object
 
@@ -36,10 +36,13 @@ fs.readFile('public/data/map.json', 'utf8', (err, locations) => {
         map[locations[i].y][locations[i].x]=locations[i];
     }
 
-});
+    return map;
+
+}
 
 // pass dynamic values to the edit template
 router.get('/', function(req, res, next) {
+    let map=loadMapData();
     res.render('edit', {
         title: 'Map Editor',
         year: new Date().getFullYear(),
