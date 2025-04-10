@@ -10,16 +10,9 @@
             <% var bgColor = (map[y][x].isEmpty) ? 'bg-gray-50' : 'bg-gray-200' %>
             <% var isEmpty = (map[y][x].isEmpty) ? 'true' : 'false' %>
             <div id="map-cell-<%= y %>-<%= x %>" data-x="<%= x %>" data-y="<%= y %>" data-is-empty="<%= isEmpty %>" class="map-cell <%= borderColor %> <%= bgColor %> hover:border-sky-300 p-4 m-2 w-40 h-25 text-xs rounded-sm float-left text-center border-1 block cursor-pointer select-none relative">
-              <%= map[y][x].name %>
-              <% if (map[y][x].dirs.indexOf("north")!=-1) { %>
-                <div class="absolute block top-0 left-0 w-1 h-4 border-l-1 border-gray-500 ml-19" style="margin-top:-11%;"></div>
-              <% } if (map[y][x].dirs.indexOf("south")!=-1) { %>
-                <div class="absolute block top-0 left-0 w-1 h-4 border-l-1 border-gray-500 ml-19" style="margin-top:63%;"></div>
-              <% } if (map[y][x].dirs.indexOf("west")!=-1) { %>
-                <div class="absolute block top-0 left-0 w-4 h-1 border-b-1 border-gray-500 mt-11" style="margin-left: -11%;"></div>
-                <% } if (map[y][x].dirs.indexOf("east")!=-1) { %>
-                  <div class="absolute block top-0 left-0 w-4 h-1 border-b-1 border-gray-500 mt-11" style="margin-left: 100%;"></div>                
-              <% } %>
+              <span class="cell-name-text"><%= map[y][x].name %></span>
+              <div class="<% if (!map[y][x].dirs.north) { %>hidden<% } %> path-north absolute block top-0 left-0 w-1 h-4 border-l-1 border-gray-500 ml-19" style="margin-top:-11%;"></div>
+              <div class="<% if (!map[y][x].dirs.east) { %>hidden<% } %> path-east absolute block top-0 left-0 w-4 h-1 border-b-1 border-gray-500 mt-11" style="margin-left: 100%;"></div>                
             </div>
           <% } %>
           <p class="clear-both" />

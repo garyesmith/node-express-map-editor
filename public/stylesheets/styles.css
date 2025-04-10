@@ -347,6 +347,9 @@
   .bg-gray-300 {
     background-color: var(--color-gray-300);
   }
+  .bg-sky-300 {
+    background-color: var(--color-sky-300);
+  }
   .bg-slate-50 {
     background-color: var(--color-slate-50);
   }

@@ -19,7 +19,12 @@ function loadMapData() {
                 y: y,
                 name: '',
                 isEmpty: true,
-                dirs: ''
+                dirs: {
+                    "north": false,
+                    "east": false,
+                    "south": false,
+                    "west": false
+                }
             }
         }
         map[y]=row;

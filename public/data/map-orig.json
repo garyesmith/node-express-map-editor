@@ -4,13 +4,23 @@
         "desc": "This is the first location.\n\nWe can add paragraphs, like this. One two three.",
         "x": 0,
         "y": 0,
-        "dirs": "east"
+        "dirs": {
+            "north": false,
+            "east": true,
+            "south": false,
+            "west": false
+        }
     },
     {
         "name": "Second Location File",
         "desc": "The ground here is rocky and uneven.",
         "x": 1,
         "y": 0,
-        "dirs": "west"
+        "dirs": {
+            "north": false,
+            "east": false,
+            "south": false,
+            "west": true
+        }
     }
 ]

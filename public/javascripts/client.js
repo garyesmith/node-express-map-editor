@@ -19,6 +19,8 @@ $(document).ready(function() {
     $(".map-cell").on("click", function() {
         var x=parseInt($(this).attr("data-x"), 10);
         var y=parseInt($(this).attr("data-y"), 10);
+        $(".map-cell").removeClass("bg-sky-300");
+        $(this).addClass("bg-sky-300");
         $("#location-coords").val(x+","+y);
         $.get("/api/map/"+x+"/"+y, function( location ) {
             $("#location-name").val(location.name)
@@ -26,17 +28,19 @@ $(document).ready(function() {
 
             // check the correct direction checkboxes based on saved data
             $("input.location-dir").prop('checked', false);
-            if (location.dirs.indexOf("north")!=-1) {
-                $("input.location-dir-north").prop('checked', true);
-            }
-            if (location.dirs.indexOf("east")!=-1) {
-                $("input.location-dir-east").prop('checked', true);
-            }
-            if (location.dirs.indexOf("south")!=-1) {
-                $("input.location-dir-south").prop('checked', true);
-            }
-            if (location.dirs.indexOf("west")!=-1) {
-                $("input.location-dir-west").prop('checked', true);
+            if (typeof location.dirs != "undefined") {
+                if (location.dirs.north) {
+                    $("input.location-dir-north").prop('checked', true);
+                }
+                if (location.dirs.east) {
+                    $("input.location-dir-east").prop('checked', true);
+                }
+                if (location.dirs.south) {
+                    $("input.location-dir-south").prop('checked', true);
+                }
+                if (location.dirs.west) {
+                    $("input.location-dir-west").prop('checked', true);
+                }
             }
             
         });
@@ -68,6 +72,9 @@ $(document).ready(function() {
     // save changes when checkbox changes field blurs
     $("#location-form input[type='checkbox']").on("change", function() {
         saveForm();
+        setTimeout(function() {
+            saveForm();
+        }, 10);
     })
 
     // save changes when location form field blurs
@@ -87,47 +94,81 @@ $(document).ready(function() {
 
     function saveForm() {
         var locationCoords=$("#location-coords").val().split(",");
+        var x=parseInt(locationCoords[0],10);
+        var y=parseInt(locationCoords[1],10);
+        var id="#map-cell-"+y+'-'+x;
+
         var locationName=$("#location-name").val();
+        if (typeof locationName=="undefined" || !locationName.length) {
+            locationName='New Location';
+            $("#location-name").val(locationName);
+        }
         var locationDesc=$("#location-desc").val();
-        var locationDirs=[];
+        var locationDirs={
+            "north": false,
+            "east": false,
+            "south": false,
+            "west": false
+        };
+        $(id).find(".path-north, .path-east").hide();
         if ($("input.location-dir-north").prop("checked")) {
-            locationDirs.push("north");
+            locationDirs.north=true;
+            $(id).find(".path-north").show();
         }
         if ($("input.location-dir-east").prop("checked")) {
-            locationDirs.push("east");
+            locationDirs.east=true;
+            $(id).find(".path-east").show();
         }
         if ($("input.location-dir-south").prop("checked")) {
-            locationDirs.push("south");
+            locationDirs.south=true;
         }
         if ($("input.location-dir-west").prop("checked")) {
-            locationDirs.push("west");
+            locationDirs.west=true;
         }
-        locationDirs=locationDirs.join(",");
-        if (typeof locationDirs=="undefined" || !locationDirs.length) {
-            locationDirs='';
-        }
-        var id="#map-cell-"+locationCoords[1]+'-'+locationCoords[0];
         $(id).addClass("border-gray-500").addClass("bg-gray-200");
-        $(id).text(locationName);
+        $(id).find(".cell-name-text").text(locationName);
         if ($(id).attr("data-is-empty")=="true") {
             $(id).attr("data-is-empty", "false");
-            createMapRecord(locationCoords[0], locationCoords[1], locationName, locationDesc, locationDirs);
+            createMapRecord(x, y, locationName, locationDesc, locationDirs);
         } else {
-            updateMapRecord(locationCoords[0], locationCoords[1], locationName, locationDesc, locationDirs);
+            updateMapRecord(x, y, locationName, locationDesc, locationDirs);
         }
+
+        // redraw paths on cells to immediate west and south
+        redrawCellPaths(x-1, y); // west
+        redrawCellPaths(x, y+1); // south
     }
 
-    function createMapRecord(x, y, name, desc, dirs="") {
+    // redraw paths of cell with given coords
+    function redrawCellPaths(x, y) {
+        $.get("/api/map/"+x+"/"+y, function( location ) {
+            if (typeof location != "undefined" && typeof location.dirs != "undefined") {
+                var id="#map-cell-"+y+'-'+x;
+                $(id).find(".path-north, .path-east").hide();
+                if (location.dirs.north) {
+                    $(id).find(".path-north").show();
+                }
+                if (location.dirs.east) {
+                    $(id).find(".path-east").show();
+                }
+            }
+        });
+    }
+
+    function createMapRecord(x, y, name, desc, dirs) {
+        var data={
+            x: x,
+            y: y,
+            name: name,
+            desc: desc,
+            dirs: dirs
+        }
+        data=JSON.stringify(data);
         $.ajax({
             type: "POST",
             url: "/api/map/",
-            data: {
-                x: x,
-                y: y,
-                name: name,
-                desc: desc,
-                dirs: dirs
-            },
+            data: data,
+            contentType: "application/json",
             success: function(data) {
                 setFormStatus("All changes saved.", true);
             },
@@ -135,17 +176,20 @@ $(document).ready(function() {
         });
     }
 
-    function updateMapRecord(x, y, name, desc, dirs="") {
+    function updateMapRecord(x, y, name, desc, dirs) {
+        var data={
+            x: x,
+            y: y,
+            name: name,
+            desc: desc,
+            dirs: dirs
+        };
+        data=JSON.stringify(data);
         $.ajax({
             type: "PUT",
             url: "/api/map/",
-            data: {
-                x: x,
-                y: y,
-                name: name,
-                desc: desc,
-                dirs: dirs
-            },
+            data: data,
+            contentType: "application/json",
             success: function(data) {
                 setFormStatus("All changes saved.", true);
             },
