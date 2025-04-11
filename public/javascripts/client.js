@@ -64,12 +64,43 @@ $(document).ready(function() {
         $("#location-form").show();
     });
 
+    // handle click on delete location button
+    $("#location-form button#delete-location").on("click", function(e) {
+        e.preventDefault();
+        if (confirm("Are you sure you wish to delete this location?")) {
+            $("#location-form input.location-dir").removeAttr("disabled").prop('checked', false); //.trigger("click");
+            var locationCoords=$("#location-coords").val().split(",");
+            var x=parseInt(locationCoords[0],10);
+            var y=parseInt(locationCoords[1],10);
+            var id="#map-cell-"+y+'-'+x;;
+            $(id).removeClass("bg-sky-300").removeClass("border-gray-500").removeClass("bg-gray-200");
+            $(id).addClass("bg-gray-50").addClass("border-gray-200");
+            $(id).attr("data-is-empty", true);
+            $(id).find("span.cell-name-text").empty();
+            $(id).find("div").hide();
+            var idToWest="#map-cell-"+y+'-'+(x-1);
+            $(idToWest).find("div.path-east").hide();
+            var idToSouth="#map-cell-"+(y+1)+'-'+x;
+            $(idToSouth).find("div.path-north").hide();
+            $("#location-form").show();
+            $.ajax({
+                type: "DELETE",
+                url: "/api/map/"+x+"/"+y,
+                contentType: "application/json",
+                success: function(data) {
+                    console.log("Map cell deleted.");
+                },
+                dataType: "json"
+            });
+        }
+    });
+
     // change from status when location form is being edited
     $("#location-form input[type!='checkbox'], #location-form textarea").on("focus", function() {
         setFormStatus("Editing...");
     });
 
-    // save changes when checkbox changes field blurs
+    // save changes when checkbox changes
     $("#location-form input[type='checkbox']").on("change", function() {
         saveForm();
         setTimeout(function() {
@@ -79,6 +110,12 @@ $(document).ready(function() {
 
     // save changes when location form field blurs
     $("#location-form input, #location-form textarea").on("blur", function() {
+        saveForm();
+    });
+
+    // save changes when save button is clicked
+    $("#location-form button#save-location").on("click", function(e) {
+        e.preventDefault();
         saveForm();
     });
 
