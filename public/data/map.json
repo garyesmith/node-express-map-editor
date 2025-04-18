@@ -2,10 +2,120 @@
   {
     "x": 0,
     "y": 0,
-    "name": "Home!",
-    "desc": "You are home",
+    "name": "a rocky beach",
+    "desc": "You are standing on a rocky beach. Waves crash against the shore. In the deeper water, there are the shattered remnants of a sunken boat — your boat.",
+    "dirs": {
+      "north": true,
+      "east": true,
+      "south": false,
+      "west": false
+    },
+    "img": true
+  },
+  {
+    "x": 0,
+    "y": -1,
+    "name": "a narrow path",
+    "desc": "You are on a narrow path, barely visible through the sandy soil. On either side of the path, long grasses sway in the breeze.",
+    "dirs": {
+      "north": true,
+      "east": false,
+      "south": true,
+      "west": false
+    },
+    "img": true
+  },
+  {
+    "x": 0,
+    "y": -2,
+    "name": "a small clearing",
+    "desc": "You are in a small clearing outside a shack. The ground is sandy and unkempt.",
+    "dirs": {
+      "north": true,
+      "east": true,
+      "south": true,
+      "west": false
+    }
+  },
+  {
+    "x": 0,
+    "y": -3,
+    "name": "an old shack",
+    "desc": "You are inside an old shack. There's a mattress on a small creaky boxspring, and a counter with a washbasin and some kitchen utensils.\n\nIt's dusty and basic, but this shack is a safe shelter from the elements.",
     "dirs": {
       "north": false,
+      "east": false,
+      "south": true,
+      "west": false
+    }
+  },
+  {
+    "x": 1,
+    "y": -2,
+    "name": "a rough road",
+    "desc": "You are on a rough road through weeds and brush. You can see evidence of wheel ruts in the hard-packed dirt.",
+    "dirs": {
+      "north": false,
+      "east": true,
+      "south": false,
+      "west": true
+    }
+  },
+  {
+    "x": 2,
+    "y": -2,
+    "name": "a crossroads",
+    "desc": "You are at the intersection of several dirt roads. The main road runs east and west, and a smaller footpath heads north.",
+    "dirs": {
+      "north": true,
+      "east": true,
+      "south": true,
+      "west": true
+    }
+  },
+  {
+    "x": 2,
+    "y": -3,
+    "name": "foot of a cliff",
+    "desc": "You are on a dirt trail and that ends at the foot of a high, rocky cliff. At the foot of the cliff you can glimpse a dark crevice in the rocks.",
+    "dirs": {
+      "north": false,
+      "east": false,
+      "south": true,
+      "west": false
+    }
+  },
+  {
+    "x": 3,
+    "y": -2,
+    "name": "a riverbank",
+    "desc": "You are at the edge of a riverbank. The water is flowing rapidly and looks a bit too wide to cross safely. \n\nIt looks like there used to be a bridge to the east, but the planks have fallen into the water.",
+    "dirs": {
+      "north": false,
+      "east": false,
+      "south": false,
+      "west": true
+    }
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "name": "a swamp",
+    "desc": "You are up to your knees in a mucky swamp. Mosquitoes buzz around your head.",
+    "dirs": {
+      "north": false,
+      "east": false,
+      "south": false,
+      "west": true
+    }
+  },
+  {
+    "x": 2,
+    "y": -1,
+    "name": "a swamp",
+    "desc": "You are knee-deep in a muddy swamp. Mosquitos buzz around your head.",
+    "dirs": {
+      "north": true,
       "east": false,
       "south": false,
       "west": false

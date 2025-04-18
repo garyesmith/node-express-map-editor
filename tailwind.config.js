@@ -9,8 +9,7 @@ module.exports = {
             sky: colors.lightBlue,
             neutral: colors.trueGray,
             gray: colors.coolGray,
-            slate: colors.blueGray,
-            lime: colors.lime,
+            slate: colors.blueGray
         }
     }
   },

@@ -1,0 +1,12 @@
+[
+    {
+      "x": 0,
+      "y": 0,
+      "name": "Wooden plank",
+      "desc": "A flat plank of worn wood that seems to have once been part of a boat. It's small enough to carry under your arms.",
+      "use": {
+        "x": 3,
+        "y": -2,
+        "result": "You lay the plank across the river, resting it on the supports of the former bridge. It's not perfect, but it looks sturdy enough to hold your weight.",
+        "hook": "item_0_0"
+      }
