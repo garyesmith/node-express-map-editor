@@ -58,37 +58,38 @@ var game = {
         // append any items at the this location to the location text
         items=inventory.getLocationItems(x,y);
         if (items.length) {
-            $("#buttons p.examine, #buttons p.get").empty().hide();
+           // $("#buttons p.examine, #buttons p.get").empty().hide();
             for (var i=0; i<items.length; i++) {
                 if (!items[i].isInInventory) {
                     text+="\n\nThere is a " + items[i].name + " here.";
-                    $("#buttons button.examine").removeAttr("disabled");
-                    $("#buttons p.examine").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" data-item-examine="'+items[i].examine +'" class="examine-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE '+ items[i].name.toUpperCase()+'</button>');
-                    if (items[i].isGettable) {
-                        $("#buttons button.get").removeAttr("disabled");
-                        $("#buttons p.get").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="get-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET '+ items[i].name.toUpperCase()+'</button>');
-                    }
-                } else {
-                    $("#buttons button.drop-item").removeAttr("disabled");
-                }
+                    //$("#buttons button.examine").removeAttr("disabled");
+                   // $("#buttons p.examine").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" data-item-examine="'+items[i].examine +'" class="examine-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE '+ items[i].name.toUpperCase()+'</button>');
+                    //if (items[i].isGettable) {
+                   //     $("#buttons button.get").removeAttr("disabled");
+                   //    $("#buttons p.get").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="get-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET '+ items[i].name.toUpperCase()+'</button>');
+                   // }
+                } 
+                //else {
+                    //$("#buttons button.drop-item").removeAttr("disabled");
+               // }
             }
         }
 
         // append any items in the current inventory (carrying) to the drop and use buttons
-        var currentInventory=inventory.getCurrentInventory();
-        $("#buttons p.drop, #buttons p.use").empty().hide();
-        if (typeof currentInventory != "undefined" && currentInventory.length) {
-            for (var i=0; i<currentInventory.length; i++) {
-                $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
-                $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Drop '+ currentInventory[i].name.toUpperCase()+'</button>');
-                $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Use '+ currentInventory[i].name.toUpperCase()+'</button>');
-            }
-        }
+        //var currentInventory=inventory.getCurrentInventory();
+        //$("#buttons p.drop, #buttons p.use").empty().hide();
+        //if (typeof currentInventory != "undefined" && currentInventory.length) {
+        //    for (var i=0; i<currentInventory.length; i++) {
+        //        $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
+        //        $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Drop '+ currentInventory[i].name.toUpperCase()+'</button>');
+        //        $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Use '+ currentInventory[i].name.toUpperCase()+'</button>');
+        //    }
+        //}
 
-        $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
+       // $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
 
-        // re-init button click handlers
-        this.initClickHandlers();
+        // reset location buttons related to items
+        this.resetCurrentLocationItemButtons();
 
         // format line breaks in the location text
         text=text.replaceAll("\n","|");
@@ -198,7 +199,7 @@ var game = {
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Get ' + $(this).attr("data-item-name") + '</p>');
             inventory.addItemToInventory($(this).attr("data-item-id"));
             thisContext.renderGameText("You pick up the " + $(this).attr("data-item-name") +'.', '', function() {
-                thisContext.resetCurrentLocationButtons();
+                thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
             });
         });
@@ -207,7 +208,7 @@ var game = {
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Drop ' + $(this).attr("data-item-name") + '</p>');
             inventory.dropItemFromInventory($(this).attr("data-item-id"), x, y);
             thisContext.renderGameText("You drop the " + $(this).attr("data-item-name") +'.', '', function() {
-                thisContext.resetCurrentLocationButtons();
+                thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
             });
         });
@@ -224,7 +225,8 @@ var game = {
 
     },
 
-    resetCurrentLocationButtons: function() {
+    // reset visibility and disabled status for buttons related to items at the current location
+    resetCurrentLocationItemButtons: function() {
 
         // reset button containers to default
         $("#buttons, #buttons p.directions, #buttons p.items").show();
@@ -265,9 +267,7 @@ var game = {
                 }
             }
         }
-
         $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
-        
         this.initClickHandlers();
 
     },
