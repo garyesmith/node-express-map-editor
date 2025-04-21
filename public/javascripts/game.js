@@ -58,35 +58,12 @@ var game = {
         // append any items at the this location to the location text
         items=inventory.getLocationItems(x,y);
         if (items.length) {
-           // $("#buttons p.examine, #buttons p.get").empty().hide();
             for (var i=0; i<items.length; i++) {
                 if (!items[i].isInInventory) {
                     text+="\n\nThere is a " + items[i].name + " here.";
-                    //$("#buttons button.examine").removeAttr("disabled");
-                   // $("#buttons p.examine").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" data-item-examine="'+items[i].examine +'" class="examine-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE '+ items[i].name.toUpperCase()+'</button>');
-                    //if (items[i].isGettable) {
-                   //     $("#buttons button.get").removeAttr("disabled");
-                   //    $("#buttons p.get").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="get-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET '+ items[i].name.toUpperCase()+'</button>');
-                   // }
-                } 
-                //else {
-                    //$("#buttons button.drop-item").removeAttr("disabled");
-               // }
+                }
             }
         }
-
-        // append any items in the current inventory (carrying) to the drop and use buttons
-        //var currentInventory=inventory.getCurrentInventory();
-        //$("#buttons p.drop, #buttons p.use").empty().hide();
-        //if (typeof currentInventory != "undefined" && currentInventory.length) {
-        //    for (var i=0; i<currentInventory.length; i++) {
-        //        $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
-        //        $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Drop '+ currentInventory[i].name.toUpperCase()+'</button>');
-        //        $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Use '+ currentInventory[i].name.toUpperCase()+'</button>');
-        //    }
-        //}
-
-       // $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
 
         // reset location buttons related to items
         this.resetCurrentLocationItemButtons();
@@ -236,8 +213,6 @@ var game = {
         // update buttons related to items at current location
         var items=inventory.getLocationItems(x,y);
         if (items.length) {
-            console.log("there is at least one item here");
-            console.log(items);
             $("#buttons p.items button.examine, #buttons p.items button.get").removeAttr("disabled");
             $("#buttons p.examine, #buttons p.get").empty().hide();
             for (var i=0; i<items.length; i++) {
