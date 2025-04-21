@@ -14,26 +14,32 @@
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"></script>
+      <script type="text/javascript" src="/javascripts/map.js"></script>
+      <script type="text/javascript" src="/javascripts/inventory.js"></script>
     <script type="text/javascript" src="/javascripts/game.js"></script>
   </head>
   <body>
-    <div id="game-container" class="w-full h-dvh justify-center bg-transparent" style="background-image: url('/images/water2.jpg'); -webkit-background-size: auto; -moz-background-size: auto; -o-background-size: auto; background-size: auto; background-position: center center; background-repeat: repeat;">
+    <div id="game-container" class="w-full h-dvh justify-center bg-blue-200">
       <!-- div class="bg-black h-10 p-2 pl-4 w-full max-w-lg ml-auto mr-auto text-white disabled:text-gray-200 text-sm z-10 relative block"><%= title %></div -->
       <div id="game" class="w-full max-w-lg p-4 pt-10 pb-10 h-screen mt-0 ml-auto mr-auto font-serif text-lg overflow-y-scroll z-5 bg-gray-50">
         <div id="locations"></div>
-        <div id="buttons" class="w-full h-auto mt-6 mb-2 p-0 bg-transparent rounded-sm">
-          <p class="actions m-4 ml-0 mr-0 text-left w-full">
-            <p class="directions m-4 ml-0 mr-0 text-center w-full">
-              <button data-dir="north" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">NORTH</button>
-              <button data-dir="east" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">EAST</button>
-              <button data-dir="south" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">SOUTH</button>
-              <button data-dir="west" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">WEST</button>
-            </p>
-            <p class="items m-4 ml-0 mr-0 text-center w-full">
-              <button data-item-d="1" class="bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">GET ITEM</button>
-              <button data-item-d="1" class="bg-orange-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">OPEN INVENTORY</button>
-            </p>
+      <div id="buttons" class="w-full h-auto mt-6 mb-2 p-0 bg-transparent rounded-sm">
+          <p class="directions m-4 ml-0 mr-0 text-center w-full">
+            <button data-dir="north" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">NORTH</button>
+            <button data-dir="east" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">EAST</button>
+            <button data-dir="south" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">SOUTH</button>
+            <button data-dir="west" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">WEST</button>
           </p>
+          <p class="items m-4 ml-0 mr-0 text-center w-full">
+            <button data-action="examine" class="examine bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE</button>
+            <button data-action="get" class="get bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET</button>
+            <button data-action="drop" class="drop bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">DROP</button>
+            <button data-action="use" class="use bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">USE</button>
+          </p>
+          <p class="examine m-4 ml-0 mr-0 text-center w-full"></p>
+          <p class="get m-4 ml-0 mr-0 text-center w-full"></p>
+          <p class="drop m-4 ml-0 mr-0 text-center w-full"></p>
+          <p class="use m-4 ml-0 mr-0 text-center w-full"></p>
         </div>
       </div>
     </div>

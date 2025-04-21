@@ -1,12 +1,28 @@
 [
-    {
-      "x": 0,
-      "y": 0,
-      "name": "Wooden plank",
-      "desc": "A flat plank of worn wood that seems to have once been part of a boat. It's small enough to carry under your arms.",
-      "use": {
-        "x": 3,
-        "y": -2,
-        "result": "You lay the plank across the river, resting it on the supports of the former bridge. It's not perfect, but it looks sturdy enough to hold your weight.",
-        "hook": "item_0_0"
-      }
+  {
+    "x": 0,
+    "y": 0,
+    "id": "wooden-plank",
+    "name": "wooden plank",
+    "isGettable": true, 
+    "isInInventory": false,
+    "examine": "A flat plank of worn wood that was probably part of a sunken boat. It's small enough to carry under your arm.",
+    "use": {
+      "x": 3,
+      "y": -2,
+      "result": "You lay the plank across the river, resting it on the supports of the former bridge. It's not perfect, but it looks sturdy enough to hold your weight.",
+      "hook": "item_0_0",
+      "deleteAfter": true
+    }
+  },
+  {
+    "x": 0,
+    "y": -2,
+    "id": "hatchet",
+    "name": "hatchet",
+    "isGettable": true, 
+    "isInInventory": false,
+    "examine": "A small hatchet, with a worn wooden handle and a sharpened metal head.",
+    "use": false
+  }
+]

@@ -10,7 +10,7 @@
       "south": false,
       "west": false
     },
-    "img": true
+    "img": false
   },
   {
     "x": 0,
@@ -23,7 +23,7 @@
       "south": true,
       "west": false
     },
-    "img": true
+    "img": false
   },
   {
     "x": 0,
