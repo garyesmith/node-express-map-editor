@@ -163,8 +163,11 @@ var game = {
             $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.item-cancel").off("click").on("click", function() {
-            $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").hide();
-            $("#buttons p.directions, #buttons p.items, #buttons p.look").show();
+            $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use, #buttons p.look").hide();
+            $("#buttons p.directions, #buttons p.items").show();
+            if (!$("#locations > div:last").hasClass("location")) {
+                $("#buttons p.look").show();
+            }
             thisContext.scrollGameToBottom();
         });
         $("#buttons button.examine-item").off("click").on("click", function() {
