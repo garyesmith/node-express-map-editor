@@ -38,5 +38,23 @@ var map = {
             }
         }
         return {};
+    },
+
+    //replace location data for a single x,y location
+    updateLocation: function(updatedLocationRecord) {
+        console.log("updating location!");
+        if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-locations")!==null) {
+            locations=localStorage.getItem("adv-locations");
+        }
+        var locationsJson=JSON.parse(locations);
+        for (var i=0; i<locationsJson.length; i++) {
+            if (locationsJson[i].x==updatedLocationRecord.x && locationsJson[i].y==updatedLocationRecord.y) {
+                locationsJson[i]=updatedLocationRecord;
+                console.log("match!");
+                break;
+            }
+        }
+        localStorage.setItem("adv-locations", JSON.stringify(locationsJson));
+        return {"status": "ok"};
     }
 }

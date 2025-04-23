@@ -120,5 +120,41 @@
       "south": false,
       "west": false
     }
+  },
+  {
+    "x": 4,
+    "y": -2,
+    "name": "a grassy field",
+    "desc": "You stand on a grassy field on the eastern bank of a rushing river. It's calm and peaceful here.",
+    "dirs": {
+      "north": true,
+      "east": false,
+      "south": false,
+      "west": false
+    }
+  },
+  {
+    "x": 4,
+    "y": -3,
+    "name": "a hill to a lighthouse",
+    "desc": "You are standing on a steep hill at the base of a stone lighthouse. The door on the ground floor of the lighthouse is open, and its stone walls tower above you.",
+    "dirs": {
+      "north": true,
+      "east": false,
+      "south": true,
+      "west": false
+    }
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "name": "a lighthouse",
+    "desc": "You're inside the ground floor of a stone lighthouse. An old ladder leads to the upper levels, but it's rusty and broken and doesn't look like it could take your weight. \n\nThe lower floor of the lighthouse is dark and dirty and strewn with junk.",
+    "dirs": {
+      "north": false,
+      "east": false,
+      "south": true,
+      "west": false
+    }
   }
 ]

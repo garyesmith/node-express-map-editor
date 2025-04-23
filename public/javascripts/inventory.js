@@ -40,6 +40,20 @@ var inventory = {
         return locationItems;
     },
 
+    // return item data for a single x,y location
+    getItemDetailsById: function(itemId) {
+        if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
+            items=localStorage.getItem("adv-inventory");
+        }
+        items=JSON.parse(items);
+        for (var i=0; i<items.length; i++) {
+            if (items[i].id==itemId) {
+                return items[i];
+            }
+        }
+        return {}; // not found
+    },
+
     addItemToInventory: function(itemId) {
         if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
             items=localStorage.getItem("adv-inventory");
@@ -69,6 +83,22 @@ var inventory = {
             }
         }
         localStorage.setItem("adv-inventory", JSON.stringify(itemsJson));
+        return true;
+    },
+
+    // delete item from game instance (generally after it has been used)
+    deleteItem: function(itemId) {
+        if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
+            items=localStorage.getItem("adv-inventory");
+        }
+        var itemsJson=JSON.parse(items);
+        var keepItems=[];
+        for (var i=0; i<itemsJson.length; i++) {
+            if (itemsJson[i].id!=itemId) {
+                keepItems.push(itemsJson[i]);
+            }
+        }
+        localStorage.setItem("adv-inventory", JSON.stringify(keepItems));
         return true;
     },
 

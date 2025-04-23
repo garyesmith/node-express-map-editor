@@ -35,16 +35,18 @@ var game = {
         var dirTexts='';
         var thisContext=this;
         Object.keys(location.dirs).forEach(function(dir) {
-            var destCoords=thisContext.transformCoords(x, y, dir);
-            var destMeta=map.getLocation(destCoords.x, destCoords.y);
-            if (typeof destMeta.name != "undefined") {
-                if (!dirTexts.length) {
-                    dirTexts+='To the ';
-                } else {
-                    dirTexts+=', to the ';
+            if (location.dirs[dir]) {
+                var destCoords=thisContext.transformCoords(x, y, dir);
+                var destMeta=map.getLocation(destCoords.x, destCoords.y);
+                if (typeof destMeta.name != "undefined") {
+                    if (!dirTexts.length) {
+                        dirTexts+='To the ';
+                    } else {
+                        dirTexts+=', to the ';
+                    }
+                    dirTexts+=dir+' is '+destMeta.name; 
+                    $("#buttons .directions button[data-dir="+dir+']').removeAttr("disabled");       
                 }
-                dirTexts+=dir+' is '+destMeta.name; 
-                $("#buttons .directions button[data-dir="+dir+']').removeAttr("disabled");       
             }
         });
         if (dirTexts.length) {
@@ -67,6 +69,7 @@ var game = {
 
         // reset location buttons related to items
         this.resetCurrentLocationItemButtons();
+        $("#buttons .look").hide();
 
         // format line breaks in the location text
         text=text.replaceAll("\n","|");
@@ -92,7 +95,7 @@ var game = {
         var thisContext=this;
         setTimeout(function() {
             thisContext.typeText(elId, text, 0, $("#game").get(0).scrollHeight, callback);
-        }, 400);
+        }, 350);
         
     },
 
@@ -145,35 +148,37 @@ var game = {
         });
         $("#buttons button.examine").off("click").on("click", function() {
             $("#buttons p.examine").show();
-            $("#buttons p.directions, #buttons p.items").hide();
+            $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.get").off("click").on("click", function() {
             $("#buttons p.get").show();
-            $("#buttons p.directions, #buttons p.items").hide();
+            $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.drop").off("click").on("click", function() {
             $("#buttons p.drop").show();
-            $("#buttons p.directions, #buttons p.items").hide();
+            $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.use").off("click").on("click", function() {
             $("#buttons p.use").show();
-            $("#buttons p.directions, #buttons p.items").hide();
+            $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.item-cancel").off("click").on("click", function() {
             $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").hide();
-            $("#buttons p.directions, #buttons p.items").show();
+            $("#buttons p.directions, #buttons p.items, #buttons p.look").show();
+            thisContext.scrollGameToBottom();
         });
         $("#buttons button.examine-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
-            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Examine ' + $(this).attr("data-item-name") + '</p>');
+            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2 mb-2">&#8618; Examine ' + $(this).attr("data-item-name") + '</p>');
             thisContext.renderGameText($(this).attr("data-item-examine"), '', function() {
                 $("#buttons, #buttons p.directions, #buttons p.items").show();
+                $("#buttons p.look").show().find("button").removeAttr("disabled");
                 thisContext.scrollGameToBottom();
             });
         });
         $("#buttons button.get-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
-            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Get ' + $(this).attr("data-item-name") + '</p>');
+            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2 mb-2">&#8618; Get ' + $(this).attr("data-item-name") + '</p>');
             inventory.addItemToInventory($(this).attr("data-item-id"));
             thisContext.renderGameText("You pick up the " + $(this).attr("data-item-name") +'.', '', function() {
                 thisContext.resetCurrentLocationItemButtons();
@@ -182,12 +187,38 @@ var game = {
         });
         $("#buttons button.drop-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
-            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Drop ' + $(this).attr("data-item-name") + '</p>');
+            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2 mb-2">&#8618; Drop ' + $(this).attr("data-item-name") + '</p>');
             inventory.dropItemFromInventory($(this).attr("data-item-id"), x, y);
             thisContext.renderGameText("You drop the " + $(this).attr("data-item-name") +'.', '', function() {
                 thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
             });
+        });
+        $("#buttons button.use-item").off("click").on("click", function() {
+            $("#buttons, #buttons p").hide();
+            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Use ' + $(this).attr("data-item-name") + '</p>');
+            var item=inventory.getItemDetailsById($(this).attr("data-item-id"));
+            if (typeof item == "undefined" || typeof item.use == "undefined" || !item.isInInventory) {
+                thisContext.renderGameText("You cannot use the " + $(this).attr("data-item-name") + ".");
+                thisContext.resetCurrentLocationItemButtons();
+                thisContext.scrollGameToBottom();
+                return;
+            }
+            if (item.use.x!=x || item.use.y !=y) {
+                thisContext.renderGameText("You cannot use the " + $(this).attr("data-item-name") + " here.");
+                thisContext.resetCurrentLocationItemButtons();
+                thisContext.scrollGameToBottom();
+                return;
+            }
+            var itemId=$(this).attr("data-item-id");
+            thisContext.renderGameText(item.use.result, '', function() {
+                inventory.deleteItem(itemId);
+                hooks.runHook("hook_"+itemId);
+            });
+        });
+        $("#buttons button.look-around").off("click").on("click", function() {
+            $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; LOOK AROUND</p>');
+            thisContext.renderLocation(x,y);
         });
 
         $("#action").off("change").on("change", function() {
@@ -210,6 +241,9 @@ var game = {
         $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").hide();
         $("#buttons p.items button").attr("disabled","disabled");
 
+        // enable and show the 'look around again' button
+        $("#buttons p.look").show().find("button").removeAttr("disabled");
+
         // update buttons related to items at current location
         var items=inventory.getLocationItems(x,y);
         if (items.length) {
@@ -218,10 +252,10 @@ var game = {
             for (var i=0; i<items.length; i++) {
                 if (!items[i].isInInventory) {
                     $("#buttons button.examine").removeAttr("disabled");
-                    $("#buttons p.examine").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" data-item-examine="'+items[i].examine +'" class="examine-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE '+ items[i].name.toUpperCase()+'</button>');
+                    $("#buttons p.examine").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" data-item-examine="'+items[i].examine +'" class="examine-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 mt-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">EXAMINE '+ items[i].name.toUpperCase()+'</button>');
                     if (items[i].isGettable) {
                         $("#buttons button.get").removeAttr("disabled");
-                        $("#buttons p.get").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="get-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET '+ items[i].name.toUpperCase()+'</button>');
+                        $("#buttons p.get").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="get-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 mt-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">GET '+ items[i].name.toUpperCase()+'</button>');
                     }
                 } else {
                     $("#buttons button.drop-item").removeAttr("disabled");
@@ -237,12 +271,12 @@ var game = {
                 $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
                 $("#buttons p.drop, #buttons p.use").empty();
                 for (var i=0; i<currentInventory.length; i++) {
-                    $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Drop '+ currentInventory[i].name.toUpperCase()+'</button>');
-                    $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">Use '+ currentInventory[i].name.toUpperCase()+'</button>');
+                    $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">DROP '+ currentInventory[i].name.toUpperCase()+'</button>');
+                    $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">USE '+ currentInventory[i].name.toUpperCase()+'</button>');
                 }
             }
         }
-        $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
+        $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 mt-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');
         this.initClickHandlers();
 
     },

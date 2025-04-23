@@ -16,14 +16,20 @@
       crossorigin="anonymous"></script>
       <script type="text/javascript" src="/javascripts/map.js"></script>
       <script type="text/javascript" src="/javascripts/inventory.js"></script>
+      <script type="text/javascript" src="/javascripts/hooks.js"></script>
     <script type="text/javascript" src="/javascripts/game.js"></script>
   </head>
   <body>
-    <div id="game-container" class="w-full h-dvh justify-center bg-blue-200">
-      <!-- div class="bg-black h-10 p-2 pl-4 w-full max-w-lg ml-auto mr-auto text-white disabled:text-gray-200 text-sm z-10 relative block"><%= title %></div -->
-      <div id="game" class="w-full max-w-lg p-4 pt-10 pb-10 h-screen mt-0 ml-auto mr-auto font-serif text-lg overflow-y-scroll z-5 bg-gray-50">
+    <div id="game-container" class="w-full h-dvh justify-center bg-blue-200 bg-[url(/images/map.jpg)] bg-cover">
+      <div class="bg-blue-500 h-10 p-2 px-6 w-full max-w-lg m-auto text-white text-sm z-10 top-0 absolute left-0 right-0">
+        <span class="float-left inline-block relative w-1/3">Island Escape</span>  
+        <span class="float-right w-auto">
+          <img src="/images/icon-settings.svg" class="w-[22px] h-auto hover:cursor-pointer inline-block float-right" alt="Game Settings" />
+        </span>
+      </div>
+      <div id="game" class="w-full max-w-lg p-4 pt-5 pb-10 h-screen mt-0 ml-auto mr-auto font-serif text-lg overflow-y-scroll z-5 bg-gray-50 relative">
         <div id="locations"></div>
-      <div id="buttons" class="w-full h-auto mt-6 mb-2 p-0 bg-transparent rounded-sm">
+        <div id="buttons" class="w-full h-auto mt-6 mb-2 p-0 bg-transparent rounded-sm">
           <p class="directions m-4 ml-0 mr-0 text-center w-full">
             <button data-dir="north" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">NORTH</button>
             <button data-dir="east" class="bg-green-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-green-800 disabled:hover:bg-green-500 disabled:opacity-30">EAST</button>
@@ -40,6 +46,9 @@
           <p class="get m-4 ml-0 mr-0 text-center w-full"></p>
           <p class="drop m-4 ml-0 mr-0 text-center w-full"></p>
           <p class="use m-4 ml-0 mr-0 text-center w-full"></p>
+          <p class="look m-4 ml-0 mr-0 text-center w-full">
+            <button data-action="look" class="look-around bg-yellow-500 text-white disabled:text-gray-200 font-mono p-2 pl-4 pr-4 mr-2 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-yellow-800 disabled:hover:bg-yellow-500 disabled:opacity-30">LOOK AROUND AGAIN</button>
+          </p>
         </div>
       </div>
     </div>
