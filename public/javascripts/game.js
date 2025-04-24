@@ -3,17 +3,16 @@ var game = {
     x: 0,
     y: 0,
     fontSize: "lg",
+    typingEffect: "off",
     transforms: JSON.parse('{ "north": { "x": 0, "y": -1 }, "east":  { "x": 1, "y": 0 }, "south": { "x": 0, "y": 1 }, "west": { "x": -1, "y": 0 } }'),
 
     // initialize the game
     init: function() {
-        x=this.x,
-        y=this.y;
         this.initSettingsMenu();
         map.init();
         inventory.init();
         $("#game #locations").append("<p>&nbsp;</p>") // spacer
-        this.renderLocation(x,y);
+        this.renderLocation(this.x, this.y);
     },
 
     initSettingsMenu: function() {
@@ -23,14 +22,17 @@ var game = {
                 $("#game #buttons").css("visibility", "visible");
             } else {
                 $("#settings-menu .font-size button#font-"+thisContext.fontSize).addClass("selected");
+                $("#settings-menu .typing-effect button#typing-"+thisContext.typingEffect).addClass("selected");
                 $("#game #buttons").css("visibility", "hidden");
             }
-            $("#settings-menu").slideToggle(400);            
+            $("#settings-menu").slideToggle(400, function() {
+                thisContext.scrollGameToBottom();
+            });            
         });
         $("#reset-game").off("click").on("click", function() {
             if (confirm("Are you sure? All game progress will be permanently lost.")) {
-                x=0;
-                y=0;
+                thisContext.x=0;
+                thisContext.y=0;
                 localStorage.removeItem("adv-inventory");
                 localStorage.removeItem("adv-locations");
                 $("#game #locations").empty();
@@ -47,12 +49,20 @@ var game = {
             $("#settings-menu .font-size button#font-"+thisContext.fontSize).addClass("selected");
             $("#game #locations p").removeClass("text-sm text-base text-lg text-xl").addClass("text-"+thisContext.fontSize);
         });
+        $("#settings-menu .typing-effect button").off("click").on("click", function() {
+            thisContext.typingEffect=$(this).attr("data-value");
+            $("#settings-menu .typing-effect button").removeClass("selected");
+            $("#settings-menu .typing-effect button#typing-"+thisContext.typingEffect).addClass("selected");
+        });
+        $("#close-settings-menu").off("click").on("click", function() {
+            $("#settings-icon").trigger("click");
+        });
     },
 
     // build the full text to output for a requested x,y location
     renderLocation: function(x, y) {
         $("#game #buttons").css("visibility","hidden");
-        var location=map.getLocation(x,y);
+        var location=map.getLocation(this.x, this.y);
         var text='';
         var img='';
 
@@ -94,7 +104,7 @@ var game = {
         }
 
         // append any items at the this location to the location text
-        items=inventory.getLocationItems(x,y);
+        items=inventory.getLocationItems(this.x, this.y);
         if (items.length) {
             for (var i=0; i<items.length; i++) {
                 if (!items[i].isInInventory) {
@@ -144,6 +154,14 @@ var game = {
 
     // output text character-by-character into specified element
     typeText: function(elId, text, char, gameHeight, callback) {
+        if (this.typingEffect=="off") {
+            $("#"+elId).html(text.replaceAll("|",'<br>')); 
+            this.scrollGameToBottom();
+            if (typeof callback == "function") {
+                callback();
+            }
+            return;
+        }
         var currGameHeight=$("#game").get(0).scrollHeight;
         if (currGameHeight>gameHeight) {
             this.scrollGameToBottom();
@@ -163,9 +181,11 @@ var game = {
             //$("#game #buttons").css("visibility","visible");
             this.scrollGameToBottom();
             if (typeof callback == "function") {
-                setTimeout(function() {
-                    callback();
-                }, 600);
+                if (typeof callback == "function") {
+                    setTimeout(function() {
+                        callback();
+                    }, 600);
+                }
             }
         }
     },
@@ -183,31 +203,36 @@ var game = {
         var thisContext=this;
         $("#buttons p.directions button").off("click").on("click", function() {
             var dir=$(this).attr('data-dir');
-            var dest=thisContext.transformCoords(x, y, dir);
-            x=dest.x;
-            y=dest.y;
+            var dest=thisContext.transformCoords(thisContext.x, thisContext.y, dir);
+            thisContext.x=dest.x;
+            thisContext.y=dest.y;
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Go ' + dir + '</p>');
             thisContext.renderLocation(dest.x, dest.y);
         });
         $("#buttons button.examine").off("click").on("click", function() {
             $("#buttons p.examine").show();
+            $("#buttons").css("min-height",$("#buttons").height()+"px");
             $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.get").off("click").on("click", function() {
             $("#buttons p.get").show();
+            $("#buttons").css("min-height",$("#buttons").height()+"px");
             $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.drop").off("click").on("click", function() {
             $("#buttons p.drop").show();
+            $("#buttons").css("min-height",$("#buttons").height()+"px");
             $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.use").off("click").on("click", function() {
             $("#buttons p.use").show();
+            $("#buttons").css("min-height",$("#buttons").height()+"px");
             $("#buttons p.directions, #buttons p.items, #buttons p.look").hide();
         });
         $("#buttons button.item-cancel").off("click").on("click", function() {
             $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use, #buttons p.look").hide();
             $("#buttons p.directions, #buttons p.items").show();
+            $("#buttons").css("min-height","auto");
             if (!$("#locations > div:last").hasClass("location")) {
                 $("#buttons p.look").show();
             }
@@ -219,6 +244,7 @@ var game = {
             thisContext.renderGameText($(this).attr("data-item-examine"), '', function() {
                 $("#buttons p.look button").removeAttr("disabled");
                 if (!$("#settings-menu").is(":visible")) {
+                    $("#buttons").css("min-height","auto");
                     $("#buttons, #buttons p.directions, #buttons p.items, #buttons p.look").show();
                 }
                 thisContext.scrollGameToBottom();
@@ -226,6 +252,7 @@ var game = {
         });
         $("#buttons button.get-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
+            $("#buttons").css("min-height","auto");
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2 mb-2">&#8618; Get ' + $(this).attr("data-item-name") + '</p>');
             inventory.addItemToInventory($(this).attr("data-item-id"));
             thisContext.renderGameText("You pick up the " + $(this).attr("data-item-name") +'.', '', function() {
@@ -235,8 +262,9 @@ var game = {
         });
         $("#buttons button.drop-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
+            $("#buttons").css("min-height","auto");
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2 mb-2">&#8618; Drop ' + $(this).attr("data-item-name") + '</p>');
-            inventory.dropItemFromInventory($(this).attr("data-item-id"), x, y);
+            inventory.dropItemFromInventory($(this).attr("data-item-id"), thisContext.x, thisContext.y);
             thisContext.renderGameText("You drop the " + $(this).attr("data-item-name") +'.', '', function() {
                 thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
@@ -244,29 +272,32 @@ var game = {
         });
         $("#buttons button.use-item").off("click").on("click", function() {
             $("#buttons, #buttons p").hide();
+            $("#buttons").css("min-height","auto");
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; Use ' + $(this).attr("data-item-name") + '</p>');
             var item=inventory.getItemDetailsById($(this).attr("data-item-id"));
-            if (typeof item == "undefined" || typeof item.use == "undefined" || !item.isInInventory) {
-                thisContext.renderGameText("You cannot use the " + $(this).attr("data-item-name") + ".");
+            if (typeof item == "undefined" || typeof item.use != "object") {
+                thisContext.renderGameText("You see no use for the " + $(this).attr("data-item-name") + " right now.");
                 thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
                 return;
             }
-            if (item.use.x!=x || item.use.y !=y) {
-                thisContext.renderGameText("You cannot use the " + $(this).attr("data-item-name") + " here.");
+            if (item.use.x != thisContext.x || item.use.y != thisContext.y) {
+                thisContext.renderGameText("You see no use for the " + $(this).attr("data-item-name") + " right now.");
                 thisContext.resetCurrentLocationItemButtons();
                 thisContext.scrollGameToBottom();
                 return;
             }
             var itemId=$(this).attr("data-item-id");
             thisContext.renderGameText(item.use.result, '', function() {
-                inventory.deleteItem(itemId);
+                if (item.use.deleteAfter) {
+                    inventory.deleteItem(itemId);
+                }
                 hooks.runHook("hook_"+itemId);
             });
         });
         $("#buttons button.look-around").off("click").on("click", function() {
             $("#locations").append('<p class="action bg-transparent text-black font-bold font-mono text-sm uppercase m-0 pl-2 pt-2 pb-2">&#8618; LOOK AROUND</p>');
-            thisContext.renderLocation(x,y);
+            thisContext.renderLocation(thisContext.x, thisContext.y);
         });
 
         $("#action").off("change").on("change", function() {
@@ -293,7 +324,7 @@ var game = {
         $("#buttons p.look").show().find("button").removeAttr("disabled");
 
         // update buttons related to items at current location
-        var items=inventory.getLocationItems(x,y);
+        var items=inventory.getLocationItems(this.x, this.y);
         if (items.length) {
             $("#buttons p.items button.examine, #buttons p.items button.get").removeAttr("disabled");
             $("#buttons p.examine, #buttons p.get").empty().hide();
@@ -312,16 +343,23 @@ var game = {
         }
                
         // update buttons related to current inventory
+        $("#buttons p.drop, #buttons p.use").empty();
         var currentInventory=inventory.getCurrentInventory();
+        if (items.length) {
+            for (var i=0; i<items.length; i++) {
+                if (typeof items[i].use == "object") {
+                    $("#buttons p.items button.drop, #buttons p.items button.use").removeAttr("disabled");
+                    $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
+                    $("#buttons p.use").append('<button data-item-id="'+items[i].id+'" data-item-name="'+items[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">USE '+ items[i].name.toUpperCase()+'</button>');
+                }
+            }
+        }
         if (currentInventory.length) {
             $("#buttons p.items button.drop, #buttons p.items button.use").removeAttr("disabled");
-            if (typeof currentInventory != "undefined" && currentInventory.length) {
-                $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
-                $("#buttons p.drop, #buttons p.use").empty();
-                for (var i=0; i<currentInventory.length; i++) {
-                    $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">DROP '+ currentInventory[i].name.toUpperCase()+'</button>');
-                    $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">USE '+ currentInventory[i].name.toUpperCase()+'</button>');
-                }
+            $("#buttons button.drop, #buttons button.use").removeAttr("disabled");
+            for (var i=0; i<currentInventory.length; i++) {
+                $("#buttons p.drop").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="drop-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">DROP '+ currentInventory[i].name.toUpperCase()+'</button>');
+                $("#buttons p.use").append('<button data-item-id="'+currentInventory[i].id+'" data-item-name="'+currentInventory[i].name+'" class="use-item bg-blue-500 text-white disabled:text-gray-200 font-mono p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-blue-800 disabled:hover:bg-blue-500 disabled:opacity-30">USE '+ currentInventory[i].name.toUpperCase()+'</button>');
             }
         }
         $("#buttons p.examine, #buttons p.get, #buttons p.drop, #buttons p.use").append('<button data-action="cancel" class="item-cancel bg-slate-500 text-white disabled:text-gray-200 font-mono w-auto p-3 px-4 mx-1 my-3 rounded-sm text-sm cursor-pointer disabled:cursor-auto hover:bg-slate-800 disabled:hover:bg-slate-500 disabled:opacity-30">CANCEL</button>');

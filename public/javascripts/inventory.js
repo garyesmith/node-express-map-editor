@@ -69,6 +69,21 @@ var inventory = {
         return true;
     },
 
+    updateItemRecord: function(item) {
+        if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
+            items=localStorage.getItem("adv-inventory");
+        }
+        var itemsJson=JSON.parse(items);
+        for (var i=0; i<itemsJson.length; i++) {
+            if (itemsJson[i].id==item.id) {
+                itemsJson[i]=item;
+                break;
+            }
+        }
+        localStorage.setItem("adv-inventory", JSON.stringify(itemsJson));
+        return true;
+    },
+
     dropItemFromInventory: function(itemId, xDrop, yDrop) {
         if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
             items=localStorage.getItem("adv-inventory");
