@@ -3,5 +3,8 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   overflow-y: hidden;
 }
+button.selected {
+  border-width: 4px;
+}
 
 
