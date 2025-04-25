@@ -26,13 +26,14 @@ var inventory = {
     },
 
     // return item data for a single x,y location
-    getLocationItems: function(x, y) {
+    getLocationItems: function(x, y, onlyNotified=false) {
         if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-inventory")!==null) {
             items=localStorage.getItem("adv-inventory");
         }
         var itemsJson=JSON.parse(items);
         var locationItems=[];
         for (var i=0; i<itemsJson.length; i++) {
+            if (onlyNotified && !itemsJson[i].notify) continue;
             if (!itemsJson[i].isInInventory && itemsJson[i].x==x && itemsJson[i].y==y) {
                 locationItems.push(itemsJson[i]);
             }

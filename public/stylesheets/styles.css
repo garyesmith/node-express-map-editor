@@ -336,9 +336,6 @@
   .block {
     display: block;
   }
-  .flex {
-    display: flex;
-  }
   .grid {
     display: grid;
   }
@@ -428,9 +425,6 @@
   }
   .items-center {
     align-items: center;
-  }
-  .justify-center {
-    justify-content: center;
   }
   .overflow-x-scroll {
     overflow-x: scroll;
@@ -591,6 +585,9 @@
   .text-center {
     text-align: center;
   }
+  .text-left {
+    text-align: left;
+  }
   .text-right {
     text-align: right;
   }
@@ -630,6 +627,9 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .text-black {
     color: var(--color-black);

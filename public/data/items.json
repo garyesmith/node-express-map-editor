@@ -6,6 +6,7 @@
     "name": "wooden plank",
     "isGettable": true, 
     "isInInventory": false,
+    "notify": true,
     "examine": "A flat plank of worn wood that was probably part of a sunken boat. It's small enough to carry under your arm.",
     "use": {
       "x": 2,
@@ -18,10 +19,11 @@
   {
     "x": 0,
     "y": -1,
-    "id": "grasses",
-    "name": "grasses",
+    "id": "grass",
+    "name": "grass",
     "isGettable": false, 
     "isInInventory": false,
+    "notify": false,
     "examine": "Just regular grass. It doesn't seem interesting or useful.",
     "use": false
   },
@@ -32,6 +34,7 @@
     "name": "hatchet",
     "isGettable": true, 
     "isInInventory": false,
+    "notify": true,
     "examine": "A small hatchet, with a worn wooden handle and a sharpened metal head.",
     "use": {
       "x": 4,
@@ -48,6 +51,7 @@
     "name": "kerosene lantern",
     "isGettable": true, 
     "isInInventory": false,
+    "notify": true,
     "examine": "An old kerosene lantern, with a wire handle on top for easy carrying. The fuel tank is empty, but otherwise it seems to be in good condition.",
     "use": false
   }
@@ -59,6 +63,7 @@
     "name": "trap door",
     "isGettable": false, 
     "isInInventory": false,
+    "notify": true,
     "examine": "A square cut out of the floor boards, with a handle and hinges visible. You tug on the handle, but it appears to be locked tight.",
     "use": false
   }
