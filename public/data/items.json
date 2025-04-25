@@ -7,7 +7,7 @@
     "isGettable": true, 
     "isInInventory": false,
     "notify": true,
-    "examine": "A flat plank of worn wood that was probably part of a sunken boat. It's small enough to carry under your arm.",
+    "examine": "A flat plank of worn wood that was once part of the sunken boat. It's small enough to carry under your arm.",
     "use": {
       "x": 2,
       "y": -2,
@@ -16,6 +16,17 @@
       "deleteAfter": true
     }
   },
+  {
+    "x": 0,
+    "y": 0,
+    "id": "sunken_boat",
+    "name": "sunken boat",
+    "isGettable": false, 
+    "isInInventory": false,
+    "notify": false,
+    "examine": "On the horizon, you can see what remains of the old fishing boat you arrived on. Parts of the cabin and the railings jut out of the roiling waves, bent and broken amidst jagged rocks.||You were foolish to have gone out in the storm alone, but lucky to have survived and made it to shore.",
+    "use": false
+  },  
   {
     "x": 0,
     "y": -1,

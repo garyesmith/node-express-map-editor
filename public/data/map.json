@@ -16,7 +16,7 @@
     "x": 0,
     "y": -1,
     "name": "a narrow path",
-    "desc": "You are on a narrow path, barely visible through sandy soil. On either side of the path, long grasses sway in the breeze.",
+    "desc": "You are on a narrow path, barely visible through sandy soil. On either side of the path, long grass sways in the breeze.",
     "dirs": {
       "north": true,
       "east": false,
