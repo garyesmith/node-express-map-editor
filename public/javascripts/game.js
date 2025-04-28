@@ -49,6 +49,10 @@ var game = {
                 $("#settings-menu .font-size button#font-"+thisContext.fontSize).addClass("selected");
                 $("#settings-menu .typing-effect button#typing-"+thisContext.typingEffect).addClass("selected");
                 $("#game #buttons").css("visibility", "hidden");
+                var gameCompletion=map.getCompletionPercentage();
+                $("#settings-menu #label").text(gameCompletion+"%");
+                var gameCompletionPx=Math.floor(gameCompletion*2.5);
+                $("#settings-menu #complete").width(gameCompletionPx+"px");
             }
             $("#settings-menu").slideToggle(400, function() {
                 thisContext.scrollGameToBottom();
@@ -93,6 +97,10 @@ var game = {
         var location=map.getLocation(this.x, this.y);
         var text='';
         var img='';
+
+        // mark the location as visited, if not already
+        location.isVisited=true;
+        map.updateLocation(location);
 
         // temporarily disable all interaction buttons
         $("#buttons button").attr("disabled","disabled");
@@ -323,7 +331,12 @@ var game = {
                     if (item.use.deleteAfter) {
                         inventory.deleteItem(itemId);
                     }
-                    hooks.runHook("hook_"+itemId);
+                    if (typeof item.use.hook != "undefined" && item.use.hook.length) {
+                        hooks.runHook("hook_"+itemId);
+                    } else {
+                        thisContext.resetCurrentLocationItemButtons();
+                        thisContext.scrollGameToBottom();
+                    }
                 });
             }
         });

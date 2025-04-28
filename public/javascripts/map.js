@@ -25,6 +25,25 @@ var map = {
         }
     },
 
+    // get the percentage of the map that has been explored
+    getCompletionPercentage: function() {
+        if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-locations")!==null) {
+            locations=localStorage.getItem("adv-locations");
+        }
+        var locationsJson=JSON.parse(locations);
+        var visits=0;
+        for (var i=0; i<locationsJson.length; i++) {
+            if (locationsJson[i].isVisited) {
+                visits++;
+            }
+        }
+        if (visits>0 && locationsJson.length>0) {
+            return Math.floor(visits/locationsJson.length*100);
+        } else {
+            return 0;
+        }
+    },
+
     // return map location data for a single x,y location
     getLocation: function(x, y) {
         if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-locations")!==null) {
@@ -40,7 +59,7 @@ var map = {
         return {};
     },
 
-    //replace location data for a single x,y location
+    // replace location data for a single x,y location
     updateLocation: function(updatedLocationRecord) {
         if (typeof(Storage) !== "undefined" && localStorage.getItem("adv-locations")!==null) {
             locations=localStorage.getItem("adv-locations");

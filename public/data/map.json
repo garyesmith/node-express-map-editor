@@ -88,7 +88,7 @@
     "x": 3,
     "y": -2,
     "name": "a bridge",
-    "desc": "You stand on the planks of a makeshift bridge across a small but turbulent river.",
+    "desc": "You stand on the planks of a small wooden bridge. Below the wooden planks, a turbulent river rushes by.",
     "dirs": {
       "north": false,
       "east": true,
@@ -123,8 +123,8 @@
   {
     "x": 4,
     "y": -3,
-    "name": "a hill to a lighthouse",
-    "desc": "You are standing on a steep hill just outside a stone lighthouse. The door on the ground floor of the lighthouse is ajar, and its grey walls tower above you.",
+    "name": "a steep hill",
+    "desc": "You are standing on a steep hill, just outside a stone lighthouse. The door on the ground floor of the lighthouse is ajar, and its grey walls tower above you.",
     "dirs": {
       "north": true,
       "east": false,
@@ -136,11 +136,23 @@
     "x": 4,
     "y": -4,
     "name": "a lighthouse",
-    "desc": "You're inside an old stone lighthouse. Beams of light shine down through the windows far above. The floor is dusty and strewn with junk. It seems nobody has been in here for years.\n",
+    "desc": "You're inside an old stone lighthouse. Beams of light shine down through the windows far above. The floor is dusty and strewn with junk. It seems nobody has been in here for years.",
     "dirs": {
       "north": false,
       "east": false,
       "south": true,
+      "west": false
+    }
+  },
+  {
+    "x": 4,
+    "y": -5,
+    "name": "the lighthouse cellar",
+    "desc": "You are in the cellar of the stone lighthouse. The stone walls are damp and lined with moss, and it's much colder down here than it was above.\n\nA ladder leads up to a trap door in the ceiling, the only source of dim light in this room.\n\nIt looks like there might be a tunnel heading west, but it's too dark to explore it safely.",
+    "dirs": {
+      "north": false,
+      "east": false,
+      "south": false,
       "west": false
     }
   }

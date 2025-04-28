@@ -41,9 +41,16 @@ var hooks = {
     },
 
     "hook_trap_door": function() {
-        game.x=0;
-        game.y=0;
-        game.renderLocation(0, 0);
+        game.x=4;
+        game.y=-5;
+        game.renderLocation(4, -5);
+        game.scrollGameToBottom();
+    },
+
+    "hook_ladder": function() {
+        game.x=4;
+        game.y=-4;
+        game.renderLocation(4, -4);
         game.scrollGameToBottom();
     }
 

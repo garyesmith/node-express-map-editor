@@ -24,7 +24,7 @@
     "isGettable": false, 
     "isInInventory": false,
     "notify": false,
-    "examine": "On the horizon, you can see what remains of the old fishing boat you arrived on. Parts of the cabin and the railings jut out of the roiling waves, bent and broken amidst jagged rocks.||You were foolish to have gone out in the storm alone, but lucky to have survived and made it to shore.",
+    "examine": "On the horizon, you can see what remains of the old fishing boat that brought you here. The cabin and the railings jut out of the roiling waves, bent and broken amid jagged rocks.||You were foolish to have gone out in the storm alone, and lucky to have survived and made it to shore.",
     "use": false
   },  
   {
@@ -50,7 +50,7 @@
     "use": {
       "x": 4,
       "y": -4,
-      "result": "You swing the hatchet hard against the trap door several times. The wood splinters, and you hear a 'pop' as the lock gives way. Grabbing the handle, you swing the trap door open and see a ladder leading down into darkness.",
+      "result": "You swing the hatchet hard against the trap door several times. The wood splinters, and with a 'clunk' the lock gives way. Grabbing the handle, you swing the trap door open to reveal a ladder leading down into darkness.",
       "hook": "hook_hatchet_trap_door",
       "deleteAfter": false
     }
@@ -64,9 +64,13 @@
     "isInInventory": false,
     "notify": true,
     "examine": "An old kerosene lantern, with a wire handle on top for easy carrying. The fuel tank is empty, but otherwise it seems to be in good condition.",
-    "use": false
-  }
-  ,
+    "use": {
+      "x": 4,
+      "y": -5,
+      "result": "There is no fuel in the lantern, and you have nothing to light it with.",
+      "deleteAfter": false
+    }
+  },
   {
     "x": 4,
     "y": -4,
@@ -77,5 +81,22 @@
     "notify": true,
     "examine": "A square cut out of the floor boards, with a handle and hinges visible. You tug on the handle, but it appears to be locked tight.",
     "use": false
+  },
+  {
+    "x": 4,
+    "y": -5,
+    "id": "ladder",
+    "name": "ladder",
+    "isGettable": false, 
+    "isInInventory": false,
+    "notify": false,
+    "examine": "A metal ladder extending upwards through a trap door in the ceiling.",
+    "use": {
+      "x": 4,
+      "y": -5,
+      "result": "You grab the rungs of the ladder and climb upwards, through the trap door in the ceiling.",
+      "hook": "hook_ladder",
+      "deleteAfter": false
+    }
   }
 ]
